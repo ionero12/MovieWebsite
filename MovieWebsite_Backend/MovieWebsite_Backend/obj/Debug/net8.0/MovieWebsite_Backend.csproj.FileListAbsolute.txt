@@ -126,3 +126,6 @@ D:\Projects\Web apps\Movie website\MovieWebsite\MovieWebsite_Backend\MovieWebsit
 D:\Projects\Web apps\Movie website\MovieWebsite\MovieWebsite_Backend\MovieWebsite_Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 D:\Projects\Web apps\Movie website\MovieWebsite\MovieWebsite_Backend\MovieWebsite_Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 D:\Projects\Web apps\Movie website\MovieWebsite\MovieWebsite_Backend\MovieWebsite_Backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\Projects\Web apps\Movie website\MovieWebsite\MovieWebsite_Backend\MovieWebsite_Backend\bin\Debug\net8.0\DotNetEnv.dll
+D:\Projects\Web apps\Movie website\MovieWebsite\MovieWebsite_Backend\MovieWebsite_Backend\bin\Debug\net8.0\Sprache.dll
+D:\Projects\Web apps\Movie website\MovieWebsite\MovieWebsite_Backend\MovieWebsite_Backend\obj\Debug\net8.0\MovieWebsite_Backend.sourcelink.json
