@@ -19,9 +19,14 @@ public class UserService : IUserService
     public async Task<string> LoginAsync(string username, string password)
     {
         var user = await _userRepository.GetByUsernameAsync(username);
-        if (user == null || !VerifyPassword(password, user.Password))
+        
+        if (user == null)
         {
-            throw new UnauthorizedAccessException("Invalid username or password");
+            throw new UnauthorizedAccessException("User does not exist");
+        }
+        if(!VerifyPassword(password, user.Password))
+        {
+            throw new UnauthorizedAccessException("Password does not match");
         }
 
         return _jwtService.GenerateToken(user);
@@ -29,7 +34,6 @@ public class UserService : IUserService
     
     public async Task<User> RegisterAsync(RegisterDTO registerDTO)
     {
-        // Check if user already exists
         if (await _userRepository.GetByUsernameAsync(registerDTO.Username) != null)
         {
             throw new InvalidOperationException("Username already exists");
@@ -40,7 +44,6 @@ public class UserService : IUserService
             throw new InvalidOperationException("Email already exists");
         }
 
-        // Create new user
         var user = new User
         {
             Username = registerDTO.Username,
@@ -48,7 +51,6 @@ public class UserService : IUserService
             Password= HashPassword(registerDTO.Password)
         };
 
-        // Save user to database
         await _userRepository.AddAsync(user);
 
         return user;
@@ -59,7 +61,6 @@ public class UserService : IUserService
         return BCrypt.Net.BCrypt.Verify(password, passwordHash);
     }
 
-    // When creating a new user or updating a password:
     private string HashPassword(string password)
     {
         return BCrypt.Net.BCrypt.HashPassword(password);

@@ -10,8 +10,9 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddApplicationServices(this IServiceCollection services,
         IConfiguration configuration)
     {
+        var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseMySql(configuration.GetConnectionString("DefaultConnection"),
+            options.UseMySql(connectionString,
                 new MySqlServerVersion(new Version(8, 0, 35))));
 
         services.AddScoped<IMovieRepository, MovieRepository>();
