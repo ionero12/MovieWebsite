@@ -12,18 +12,9 @@ public class UserMovieRepository : IUserMovieRepository
         _context = context;
     }
     
-    public async Task<UserMovie> AddToListAsync(int userId, int movieId, Status status)
+    public async Task AddToListAsync(UserMovie userMovie)
     {
-        var UserMovie = new UserMovie
-        {
-            UserId = userId,
-            MovieId = movieId,
-            Status = status,
-        };
-
-        await _context.UserMovies.AddAsync(UserMovie);
-        await _context.SaveChangesAsync();
-        return UserMovie;
+        await _context.UserMovies.AddAsync(userMovie);
     }
 
     public async Task RemoveFromListAsync(int userId, int movieId, Status status)

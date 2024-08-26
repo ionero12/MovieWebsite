@@ -14,7 +14,15 @@ public class UserMovieService : IUserMovieService
     
     public async Task AddToListAsync(int userId, int movieId, Status status)
     {
-        await _userMovieRepository.AddToListAsync(userId, movieId, status);
+        var UserMovie = new UserMovie
+        {
+            UserId = userId,
+            MovieId = movieId,
+            Status = status,
+        };
+        
+        await _userMovieRepository.AddToListAsync(UserMovie);
+        await _userMovieRepository.SaveChangesAsync();
     }
 
     public async Task RemoveFromListAsync(int userId, int movieId, Status status)
