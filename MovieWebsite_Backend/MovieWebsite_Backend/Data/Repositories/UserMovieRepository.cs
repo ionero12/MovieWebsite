@@ -51,4 +51,24 @@ public class UserMovieRepository : IUserMovieRepository
         return await _context.UserMovies
             .AnyAsync(uml => uml.UserId == userId && uml.MovieId == movieId && uml.Status == status);
     }
+
+    public async Task<UserMovie> GetByIds (int userId, int movieId)
+    {
+        return await _context.UserMovies.FirstOrDefaultAsync(uml => uml.UserId == userId && uml.MovieId == movieId);
+    }
+    
+    public async Task AddAsync(UserMovie userMovie)
+    {
+        await _context.UserMovies.AddAsync(userMovie);
+    }
+    
+    public void Update(UserMovie userMovie)
+    {
+        _context.UserMovies.Update(userMovie);
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
 }

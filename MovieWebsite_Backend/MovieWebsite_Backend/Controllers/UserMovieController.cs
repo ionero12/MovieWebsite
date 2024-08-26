@@ -11,18 +11,18 @@ namespace MovieWebsite_Backend.Controllers;
 [Route("api/[controller]")]
 public class UserMovieController : ControllerBase
 {
-    private readonly IUserMovieService _userMovieListService;
+    private readonly IUserMovieService _userMovieService;
 
     public UserMovieController(IUserMovieService userMovieService)
     {
-        _userMovieListService = userMovieService;
+        _userMovieService = userMovieService;
     }
 
     [HttpPost("add")]
     public async Task<IActionResult> AddToList(int movieId, Status status)
     {
         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        await _userMovieListService.AddToListAsync(userId, movieId, status);
+        await _userMovieService.AddToListAsync(userId, movieId, status);
         return Ok();
     }
 
@@ -30,7 +30,7 @@ public class UserMovieController : ControllerBase
     public async Task<IActionResult> RemoveFromList(int movieId, Status status)
     {
         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        await _userMovieListService.RemoveFromListAsync(userId, movieId, status);
+        await _userMovieService.RemoveFromListAsync(userId, movieId, status);
         return Ok();
     }
 
@@ -38,7 +38,7 @@ public class UserMovieController : ControllerBase
     public async Task<IActionResult> GetUserList(Status status)
     {
         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        var movies = await _userMovieListService.GetUserListAsync(userId, status);
+        var movies = await _userMovieService.GetUserListAsync(userId, status);
         return Ok(movies);
     }
 
@@ -46,7 +46,32 @@ public class UserMovieController : ControllerBase
     public async Task<IActionResult> IsInList(int movieId, Status status)
     {
         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        var isInList = await _userMovieListService.IsInListAsync(userId, movieId, status);
+        var isInList = await _userMovieService.IsInListAsync(userId, movieId, status);
         return Ok(isInList);
+    }
+
+    [HttpPost("score")]
+    public async Task<IActionResult> AddScoreToMovie(int movieId, int score)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
+        {
+            return Unauthorized("User ID claim not found in token");
+        }
+
+        if (!int.TryParse(userIdClaim.Value, out int userId))
+        {
+            return BadRequest("Invalid user ID in token");
+        }
+        
+        try
+        {
+            await _userMovieService.AddScoreToMovie(userId, movieId, score);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "An error occurred while processing your request");
+        }
     }
 }

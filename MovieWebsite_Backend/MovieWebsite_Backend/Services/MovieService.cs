@@ -35,17 +35,14 @@ public class MovieService : IMovieService
 
         foreach (var apiMovie in apiMovies)
         {
-            // Check if movie already exists
             if (await _movieRepository.ExistsByExternalApiIdAsync(apiMovie.id
-                    .ToString())) continue; // Skip this movie if it already exists
+                    .ToString())) continue; 
 
             var movie = MovieMapper.MapToMovie(apiMovie);
             var genres = MovieMapper.MapToGenres(apiMovie);
 
-            // Save movie
             await _movieRepository.AddAsync(movie);
 
-            // Save genres and create relationships
             foreach (var genreModel in genres)
             {
                 var existingGenre = await _genreRepository.GetByNameAsync(genreModel.Name);

@@ -22,7 +22,7 @@ void ConfigureEnvironment(WebApplicationBuilder builder)
     Env.Load();
     builder.Configuration
         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-        .AddEnvironmentVariables();
+        .AddEnvironmentVariables().Build();
 }
 
 void ConfigureServices(WebApplicationBuilder builder)
@@ -38,16 +38,15 @@ void ConfigureServices(WebApplicationBuilder builder)
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
-            var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
-            
+            var key = Encoding.ASCII.GetBytes(builder.Configuration["JWT_SECRET"]);
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
+                IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuer = true,
-                ValidIssuer = jwtSettings.Issuer,
+                ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
                 ValidateAudience = true,
-                ValidAudience = jwtSettings.Audience,
+                ValidAudience = builder.Configuration["JwtSettings:Audience"],
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             };
