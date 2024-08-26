@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MovieWebsite_Backend.Models;
 
-namespace MovieWebsite_Backend.Data;
+namespace MovieWebsite_Backend.Data.Repositories;
 
 public class UserMovieRepository : IUserMovieRepository
 {
@@ -11,24 +11,20 @@ public class UserMovieRepository : IUserMovieRepository
     {
         _context = context;
     }
-    
-    public async Task AddToListAsync(UserMovie userMovie)
-    {
-        await _context.UserMovies.AddAsync(userMovie);
-    }
 
-    public async Task RemoveFromListAsync(int userId, int movieId, Status status)
+    public async Task<UserMovie> GetUserMovieByIdsAndStatusAsync(int userId, int movieId, Status status)
     {
-        var UserMovie = await _context.UserMovies
+        var userMovie = await _context.UserMovies
             .FirstOrDefaultAsync(uml => uml.UserId == userId && uml.MovieId == movieId && uml.Status == status);
 
-        if (UserMovie != null)
-        {
-            _context.UserMovies.Remove(UserMovie);
-            await _context.SaveChangesAsync();
-        }
+        return userMovie;
     }
-
+    
+    public async Task<UserMovie> GetUserMovieByIdsAsync(int userId, int movieId)
+    {
+        return await _context.UserMovies.FirstOrDefaultAsync(uml => uml.UserId == userId && uml.MovieId == movieId);
+    }
+    
     public async Task<IEnumerable<Movie>> GetUserListAsync(int userId, Status status)
     {
         return await _context.UserMovies
@@ -36,26 +32,26 @@ public class UserMovieRepository : IUserMovieRepository
             .Select(uml => uml.Movie)
             .ToListAsync();
     }
-
+    
     public async Task<bool> IsInListAsync(int userId, int movieId, Status status)
     {
         return await _context.UserMovies
             .AnyAsync(uml => uml.UserId == userId && uml.MovieId == movieId && uml.Status == status);
     }
 
-    public async Task<UserMovie> GetByIds (int userId, int movieId)
-    {
-        return await _context.UserMovies.FirstOrDefaultAsync(uml => uml.UserId == userId && uml.MovieId == movieId);
-    }
-    
     public async Task AddAsync(UserMovie userMovie)
     {
         await _context.UserMovies.AddAsync(userMovie);
     }
-    
+
     public void Update(UserMovie userMovie)
     {
         _context.UserMovies.Update(userMovie);
+    }
+    
+    public void RemoveFromList(UserMovie userMovie)
+    {
+        _context.UserMovies.Remove(userMovie);
     }
 
     public async Task SaveChangesAsync()

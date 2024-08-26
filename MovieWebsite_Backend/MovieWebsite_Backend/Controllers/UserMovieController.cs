@@ -54,16 +54,10 @@ public class UserMovieController : ControllerBase
     public async Task<IActionResult> AddScoreToMovie(int movieId, int score)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-        if (userIdClaim == null)
-        {
-            return Unauthorized("User ID claim not found in token");
-        }
+        if (userIdClaim == null) return Unauthorized("User ID claim not found in token");
 
-        if (!int.TryParse(userIdClaim.Value, out int userId))
-        {
-            return BadRequest("Invalid user ID in token");
-        }
-        
+        if (!int.TryParse(userIdClaim.Value, out var userId)) return BadRequest("Invalid user ID in token");
+
         try
         {
             await _userMovieService.AddScoreToMovie(userId, movieId, score);
