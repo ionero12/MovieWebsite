@@ -1,7 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using MovieWebsite_Backend.Auth.Services;
 using MovieWebsite_Backend.Data;
-using MovieWebsite_Backend.DTO;
+using MovieWebsite_Backend.Data.Repositories;
+using MovieWebsite_Backend.Data.Repositories.Interfaces;
+using MovieWebsite_Backend.Helpers.ApiHelpers;
 using MovieWebsite_Backend.Services;
+using MovieWebsite_Backend.Services.Interfaces;
 
 namespace MovieWebsite_Backend.Extensions;
 

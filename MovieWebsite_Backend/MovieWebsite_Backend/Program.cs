@@ -2,7 +2,7 @@ using System.Text;
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using MovieWebsite_Backend.DTO;
+using MovieWebsite_Backend.Auth.Models;
 using MovieWebsite_Backend.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

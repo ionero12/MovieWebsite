@@ -1,6 +1,8 @@
-using MovieWebsite_Backend.Data;
-using MovieWebsite_Backend.DTO;
-using MovieWebsite_Backend.Models;
+using MovieWebsite_Backend.Data.Repositories.Interfaces;
+using MovieWebsite_Backend.Helpers;
+using MovieWebsite_Backend.Helpers.ApiHelpers;
+using MovieWebsite_Backend.Models.Domain;
+using MovieWebsite_Backend.Services.Interfaces;
 
 namespace MovieWebsite_Backend.Services;
 
@@ -36,7 +38,7 @@ public class MovieService : IMovieService
         foreach (var apiMovie in apiMovies)
         {
             if (await _movieRepository.ExistsByExternalApiIdAsync(apiMovie.id
-                    .ToString())) continue; 
+                    .ToString())) continue;
 
             var movie = MovieMapper.MapToMovie(apiMovie);
             var genres = MovieMapper.MapToGenres(apiMovie);

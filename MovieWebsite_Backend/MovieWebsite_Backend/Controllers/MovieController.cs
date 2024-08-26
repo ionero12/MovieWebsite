@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieWebsite_Backend.Models;
+using MovieWebsite_Backend.Models.Domain;
 using MovieWebsite_Backend.Services;
+using MovieWebsite_Backend.Services.Interfaces;
 
 namespace MovieWebsite_Backend.Controllers;
 

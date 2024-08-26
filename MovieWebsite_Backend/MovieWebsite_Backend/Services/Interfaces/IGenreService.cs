@@ -1,4 +1,4 @@
-namespace MovieWebsite_Backend.Services;
+namespace MovieWebsite_Backend.Services.Interfaces;
 
 public interface IGenreService
 {

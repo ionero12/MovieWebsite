@@ -1,4 +1,4 @@
-namespace MovieWebsite_Backend.DTO;
+namespace MovieWebsite_Backend.Auth.Models;
 
 public class JwtSettings
 {

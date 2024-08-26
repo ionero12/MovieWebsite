@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
-namespace MovieWebsite_Backend.Models;
+namespace MovieWebsite_Backend.Models.Domain;
 
 [Table("movies")]
 public class Movie

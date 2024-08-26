@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using MovieWebsite_Backend.Data.Repositories.Interfaces;
 using MovieWebsite_Backend.Models;
+using MovieWebsite_Backend.Models.Domain;
 
 namespace MovieWebsite_Backend.Data.Repositories;
 
@@ -42,16 +44,19 @@ public class UserMovieRepository : IUserMovieRepository
     public async Task AddAsync(UserMovie userMovie)
     {
         await _context.UserMovies.AddAsync(userMovie);
+        await _context.SaveChangesAsync();
     }
 
-    public void Update(UserMovie userMovie)
+    public async Task Update(UserMovie userMovie)
     {
         _context.UserMovies.Update(userMovie);
+        await _context.SaveChangesAsync();
     }
     
-    public void RemoveFromList(UserMovie userMovie)
+    public async Task RemoveFromList(UserMovie userMovie)
     {
         _context.UserMovies.Remove(userMovie);
+        await _context.SaveChangesAsync();
     }
 
     public async Task SaveChangesAsync()

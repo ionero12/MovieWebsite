@@ -3,9 +3,11 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MovieWebsite_Backend.Auth.Models;
 using MovieWebsite_Backend.Models;
+using MovieWebsite_Backend.Models.Domain;
 
-namespace MovieWebsite_Backend.DTO;
+namespace MovieWebsite_Backend.Auth.Services;
 
 public class JwtService : IJwtService
 {
@@ -18,20 +20,20 @@ public class JwtService : IJwtService
 
     public string GenerateToken(User? user)
     {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));        
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
             new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Email, user.Email)
         };
 
         var token = new JwtSecurityToken(
-            issuer: _jwtSettings.Issuer,
-            audience: _jwtSettings.Audience,
-            claims: claims,
+            _jwtSettings.Issuer,
+            _jwtSettings.Audience,
+            claims,
             expires: DateTime.Now.AddMinutes(_jwtSettings.ExpirationInMinutes),
             signingCredentials: credentials
         );

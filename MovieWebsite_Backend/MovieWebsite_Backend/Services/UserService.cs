@@ -1,13 +1,15 @@
-using MovieWebsite_Backend.Data;
-using MovieWebsite_Backend.DTO;
-using MovieWebsite_Backend.Models;
+using MovieWebsite_Backend.Auth.Models;
+using MovieWebsite_Backend.Auth.Services;
+using MovieWebsite_Backend.Data.Repositories.Interfaces;
+using MovieWebsite_Backend.Models.Domain;
+using MovieWebsite_Backend.Services.Interfaces;
 
 namespace MovieWebsite_Backend.Services;
 
 public class UserService : IUserService
 {
-    private readonly IUserRepository _userRepository;
     private readonly IJwtService _jwtService;
+    private readonly IUserRepository _userRepository;
 
 
     public UserService(IUserRepository userRepository, IJwtService jwtService)
@@ -15,40 +17,30 @@ public class UserService : IUserService
         _userRepository = userRepository;
         _jwtService = jwtService;
     }
-    
+
     public async Task<string> LoginAsync(string username, string password)
     {
         var user = await _userRepository.GetByUsernameAsync(username);
-        
-        if (user == null)
-        {
-            throw new UnauthorizedAccessException("User does not exist");
-        }
-        if(!VerifyPassword(password, user.Password))
-        {
-            throw new UnauthorizedAccessException("Password does not match");
-        }
+
+        if (user == null) throw new UnauthorizedAccessException("User does not exist");
+        if (!VerifyPassword(password, user.Password)) throw new UnauthorizedAccessException("Password does not match");
 
         return _jwtService.GenerateToken(user);
     }
-    
-    public async Task<User> RegisterAsync(RegisterDTO registerDTO)
-    {
-        if (await _userRepository.GetByUsernameAsync(registerDTO.Username) != null)
-        {
-            throw new InvalidOperationException("Username already exists");
-        }
 
-        if (await _userRepository.GetByEmailAsync(registerDTO.Email) != null)
-        {
+    public async Task<User> RegisterAsync(RegisterDto registerDto)
+    {
+        if (await _userRepository.GetByUsernameAsync(registerDto.Username) != null)
+            throw new InvalidOperationException("Username already exists");
+
+        if (await _userRepository.GetByEmailAsync(registerDto.Email) != null)
             throw new InvalidOperationException("Email already exists");
-        }
 
         var user = new User
         {
-            Username = registerDTO.Username,
-            Email = registerDTO.Email,
-            Password= HashPassword(registerDTO.Password)
+            Username = registerDto.Username,
+            Email = registerDto.Email,
+            Password = HashPassword(registerDto.Password)
         };
 
         await _userRepository.AddAsync(user);
@@ -65,5 +57,4 @@ public class UserService : IUserService
     {
         return BCrypt.Net.BCrypt.HashPassword(password);
     }
-    
 }

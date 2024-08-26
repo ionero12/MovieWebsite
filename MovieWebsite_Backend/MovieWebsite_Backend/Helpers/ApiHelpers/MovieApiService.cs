@@ -1,7 +1,7 @@
-using MovieWebsite_Backend.DTO;
+using MovieWebsite_Backend.Models.DTOs;
 using Newtonsoft.Json;
 
-namespace MovieWebsite_Backend.Services;
+namespace MovieWebsite_Backend.Helpers.ApiHelpers;
 
 public class MovieApiService
 {
@@ -16,7 +16,7 @@ public class MovieApiService
         _httpClient.DefaultRequestHeaders.Add("x-rapidapi-host", ApiHost);
     }
 
-    public async Task<List<MovieDTO>> GetMoviesAsync(string genre, int limit)
+    public async Task<List<MovieDto>> GetMoviesAsync(string genre, int limit)
     {
         var request = new HttpRequestMessage
         {
@@ -27,6 +27,6 @@ public class MovieApiService
         using var response = await _httpClient.SendAsync(request);
         response.EnsureSuccessStatusCode();
         var body = await response.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<List<MovieDTO>>(body);
+        return JsonConvert.DeserializeObject<List<MovieDto>>(body);
     }
 }

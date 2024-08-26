@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace MovieWebsite_Backend.Models;
+namespace MovieWebsite_Backend.Models.Domain;
 
 [Table("genres")]
 public class Genre

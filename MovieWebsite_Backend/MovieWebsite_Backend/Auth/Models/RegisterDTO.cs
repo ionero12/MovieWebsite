@@ -1,6 +1,6 @@
-namespace MovieWebsite_Backend.DTO;
+namespace MovieWebsite_Backend.Auth.Models;
 
-public class RegisterDTO
+public class RegisterDto
 {
     public string Username { get; set; }
     public string Email { get; set; }

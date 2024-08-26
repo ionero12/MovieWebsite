@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace MovieWebsite_Backend.Models;
+namespace MovieWebsite_Backend.Models.Domain;
 
 [Table("users")]
 public class User
@@ -14,7 +14,7 @@ public class User
     {
         UserId = userId;
         Username = username;
-        Email = email; 
+        Email = email;
         Password = password;
         UserMovies = userMovies;
     }

@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
-namespace MovieWebsite_Backend.Models;
+namespace MovieWebsite_Backend.Models.Domain;
 
 [Table("users_has_movies")]
 public class UserMovie
@@ -24,14 +23,14 @@ public class UserMovie
     public Movie Movie { get; set; }
     [Column("users_user_id")] public int UserId { get; set; }
     public User User { get; set; }
-    
+
     [Column("status")] public Status Status { get; set; }
-    
+
     [Column("score")] public int Score { get; set; }
 }
 
 public enum Status
 {
-    seen,
-    next
+    Seen,
+    Next
 }

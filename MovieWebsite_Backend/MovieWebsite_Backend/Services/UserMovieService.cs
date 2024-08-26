@@ -1,5 +1,6 @@
-using MovieWebsite_Backend.Data;
-using MovieWebsite_Backend.Models;
+using MovieWebsite_Backend.Data.Repositories.Interfaces;
+using MovieWebsite_Backend.Models.Domain;
+using MovieWebsite_Backend.Services.Interfaces;
 
 namespace MovieWebsite_Backend.Services;
 
@@ -14,23 +15,20 @@ public class UserMovieService : IUserMovieService
 
     public async Task AddToListAsync(int userId, int movieId, Status status)
     {
-        var UserMovie = new UserMovie
+        var userMovie = new UserMovie
         {
             UserId = userId,
             MovieId = movieId,
             Status = status
         };
 
-        await _userMovieRepository.AddAsync(UserMovie);
-        await _userMovieRepository.SaveChangesAsync();
+        await _userMovieRepository.AddAsync(userMovie);
     }
 
     public async Task RemoveFromListAsync(int userId, int movieId, Status status)
     {
-        var UserMovie = await _userMovieRepository.GetUserMovieByIdsAndStatusAsync(userId, movieId, status);
-        if (UserMovie != null) _userMovieRepository.RemoveFromList(UserMovie);
-
-        await _userMovieRepository.SaveChangesAsync();
+        var userMovie = await _userMovieRepository.GetUserMovieByIdsAndStatusAsync(userId, movieId, status);
+        if (userMovie != null) await _userMovieRepository.RemoveFromList(userMovie);
     }
 
     public async Task<IEnumerable<Movie>> GetUserListAsync(int userId, Status status)
@@ -59,9 +57,7 @@ public class UserMovieService : IUserMovieService
         else
         {
             userMovie.Score = score;
-            _userMovieRepository.Update(userMovie);
+            await _userMovieRepository.Update(userMovie);
         }
-
-        await _userMovieRepository.SaveChangesAsync();
     }
 }

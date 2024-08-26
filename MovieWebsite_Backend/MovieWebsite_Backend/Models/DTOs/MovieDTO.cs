@@ -1,6 +1,6 @@
-namespace MovieWebsite_Backend.DTO;
+namespace MovieWebsite_Backend.Models.DTOs;
 
-public class MovieDTO
+public abstract class MovieDto
 {
     public string _id { get; set; }
     public int id { get; set; }
