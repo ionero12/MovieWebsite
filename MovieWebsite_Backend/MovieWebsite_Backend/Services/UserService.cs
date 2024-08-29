@@ -18,14 +18,14 @@ public class UserService : IUserService
         _jwtService = jwtService;
     }
 
-    public async Task<string> LoginAsync(string username, string password)
+    public async Task<User> LoginAsync(string username, string password)
     {
         var user = await _userRepository.GetByUsernameAsync(username);
 
         if (user == null) throw new UnauthorizedAccessException("User does not exist");
         if (!VerifyPassword(password, user.Password)) throw new UnauthorizedAccessException("Password does not match");
 
-        return _jwtService.GenerateToken(user);
+        return user;
     }
 
     public async Task<User> RegisterAsync(RegisterDto registerDto)

@@ -5,6 +5,6 @@ namespace MovieWebsite_Backend.Services.Interfaces;
 
 public interface IUserService
 {
-    Task<string> LoginAsync(string username, string password);
+    Task<User> LoginAsync(string username, string password);
     Task<User> RegisterAsync(RegisterDto registerDto);
 }

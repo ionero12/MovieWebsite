@@ -10,6 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 ConfigureEnvironment(builder);
 ConfigureServices(builder);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        builder => builder.WithOrigins("http://localhost:3000") // Your React app's URL
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+});
+
 var app = builder.Build();
 
 ConfigureMiddleware(app);
@@ -50,8 +59,18 @@ void ConfigureServices(WebApplicationBuilder builder)
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             };
+
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    context.Token = context.Request.Cookies["jwt"];
+                    return Task.CompletedTask;
+                }
+            };
         });
 
+    builder.Services.AddHttpContextAccessor();
     builder.Services.AddControllers();
     builder.Services.AddApplicationServices(builder.Configuration);
     builder.Services.AddAuthorization();
@@ -62,6 +81,7 @@ void ConfigureMiddleware(WebApplication app)
     app.UseHttpsRedirection();
     app.UseAuthentication();
     app.UseAuthorization();
+    app.UseCors("AllowReactApp");
 }
 
 void ConfigureEndpoints(WebApplication app)
