@@ -24,6 +24,13 @@ public class MovieController : ControllerBase
         return Ok(movies);
     }
 
+    [HttpGet("{movieId:int}")]
+    public async Task<ActionResult<Movie>> GetMovieById(int movieId)
+    {
+        var movie = await _movieService.GetMovieById(movieId);
+        return Ok(movie);
+    }
+
     [HttpGet("filterByGenre")]
     public async Task<ActionResult<IEnumerable<Movie>>> GetAllMoviesByGenre([FromQuery] string genre)
     {

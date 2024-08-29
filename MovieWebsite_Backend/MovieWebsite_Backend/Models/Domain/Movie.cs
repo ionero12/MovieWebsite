@@ -10,7 +10,7 @@ public class Movie
     }
 
     public Movie(int movieId, string title, string? description, DateOnly releaseDate, int duration,
-        string externalApiId, List<MovieGenre> movieGenres, List<UserMovie> userMovies)
+        string externalApiId, List<MovieGenre> movieGenres, List<UserMovie> userMovies, string posterPath)
     {
         MovieId = movieId;
         Title = title;
@@ -20,6 +20,7 @@ public class Movie
         ExternalApiId = externalApiId;
         MovieGenres = movieGenres;
         UserMovies = userMovies;
+        PosterPath = posterPath;
     }
 
     [Column("movie_id")] public int MovieId { get; set; }
@@ -28,6 +29,7 @@ public class Movie
     [Column("release_date")] public DateOnly ReleaseDate { get; set; }
     [Column("duration")] public int Duration { get; set; }
     [Column("external_api_id")] public string ExternalApiId { get; set; }
+    [Column("poster_path")] public string PosterPath { get; set; }
     public List<MovieGenre> MovieGenres { get; set; }
     public List<UserMovie> UserMovies { get; set; }
 }

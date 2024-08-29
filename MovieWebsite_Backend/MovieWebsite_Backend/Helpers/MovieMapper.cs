@@ -11,10 +11,11 @@ public class MovieMapper
         return new Movie
         {
             Title = dto.title,
-            Description = dto.overview,
+            Description = dto.overview ?? "No description available.",
             ReleaseDate = DateOnly.FromDateTime(dto.release_date),
             Duration = dto.runtime,
-            ExternalApiId = dto.id.ToString()
+            ExternalApiId = dto.id.ToString(),
+            PosterPath = dto.poster_path
         };
     }
 

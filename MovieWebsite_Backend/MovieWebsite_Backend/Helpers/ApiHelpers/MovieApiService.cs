@@ -21,7 +21,7 @@ public class MovieApiService
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Get,
-            RequestUri = new Uri($"https://{ApiHost}/Filter?Genre={genre}&Limit={limit}")
+            RequestUri = new Uri($"https://{ApiHost}/Filter?MinYear=2020&MaxYear=2024&Genre={genre}&Limit={limit}")
         };
 
         using var response = await _httpClient.SendAsync(request);

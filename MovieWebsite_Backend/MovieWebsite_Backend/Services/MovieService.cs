@@ -26,6 +26,11 @@ public class MovieService : IMovieService
         return _movieRepository.GetAllMoviesAsync();
     }
 
+    public Task<Movie> GetMovieById(int movieId)
+    {
+        return _movieRepository.GetMovieById(movieId);
+    }
+
     public Task<IEnumerable<Movie>> GetAllMoviesByGenreAsync(string genre)
     {
         return _movieRepository.GetAllMoviesByGenreAsync(genre);
