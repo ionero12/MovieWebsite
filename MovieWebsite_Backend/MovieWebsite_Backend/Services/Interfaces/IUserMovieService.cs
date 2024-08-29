@@ -8,5 +8,5 @@ public interface IUserMovieService
     Task RemoveFromListAsync(int userId, int movieId, Status status);
     Task<IEnumerable<Movie>> GetUserListAsync(int userId, Status status);
     Task<bool> IsInListAsync(int userId, int movieId, Status status);
-    Task AddScoreToMovie(int userId, int movieId, int score);
+    Task AddScoreToMovie(int userId, int movieId, float score);
 }

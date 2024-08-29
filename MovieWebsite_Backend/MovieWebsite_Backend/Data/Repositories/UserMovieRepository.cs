@@ -55,6 +55,7 @@ public class UserMovieRepository : IUserMovieRepository
     
     public async Task RemoveFromList(UserMovie userMovie)
     {
+        Console.WriteLine(userMovie);
         _context.UserMovies.Remove(userMovie);
         await _context.SaveChangesAsync();
     }

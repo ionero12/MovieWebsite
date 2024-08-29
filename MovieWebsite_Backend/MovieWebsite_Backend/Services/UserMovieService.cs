@@ -15,19 +15,28 @@ public class UserMovieService : IUserMovieService
 
     public async Task AddToListAsync(int userId, int movieId, Status status)
     {
-        var userMovie = new UserMovie
+        var userMovie = await _userMovieRepository.GetUserMovieByIdsAsync(userId, movieId);
+        if (userMovie == null)
         {
-            UserId = userId,
-            MovieId = movieId,
-            Status = status
-        };
-
-        await _userMovieRepository.AddAsync(userMovie);
+            userMovie = new UserMovie
+            {
+                UserId = userId,
+                MovieId = movieId,
+                Status = status
+            };
+            await _userMovieRepository.AddAsync(userMovie);
+        }
+        else
+        {
+            userMovie.Status = status;
+            await _userMovieRepository.Update(userMovie);
+        }
     }
 
     public async Task RemoveFromListAsync(int userId, int movieId, Status status)
     {
         var userMovie = await _userMovieRepository.GetUserMovieByIdsAndStatusAsync(userId, movieId, status);
+        Console.WriteLine(userMovie);
         if (userMovie != null) await _userMovieRepository.RemoveFromList(userMovie);
     }
 
@@ -41,7 +50,7 @@ public class UserMovieService : IUserMovieService
         return await _userMovieRepository.IsInListAsync(userId, movieId, status);
     }
 
-    public async Task AddScoreToMovie(int userId, int movieId, int score)
+    public async Task AddScoreToMovie(int userId, int movieId, float score)
     {
         var userMovie = await _userMovieRepository.GetUserMovieByIdsAsync(userId, movieId);
         if (userMovie == null)

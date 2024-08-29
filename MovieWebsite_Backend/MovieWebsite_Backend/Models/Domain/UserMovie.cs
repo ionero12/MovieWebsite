@@ -9,7 +9,7 @@ public class UserMovie
     {
     }
 
-    public UserMovie(int movieId, Movie movie, int userId, User user, Status status, int score)
+    public UserMovie(int movieId, Movie movie, int userId, User user, Status status, float score)
     {
         MovieId = movieId;
         Movie = movie;
@@ -26,11 +26,11 @@ public class UserMovie
 
     [Column("status")] public Status Status { get; set; }
 
-    [Column("score")] public int Score { get; set; }
+    [Column("score")] public float Score { get; set; }
 }
 
 public enum Status
 {
-    Seen,
-    Next
+    seen,
+    next
 }

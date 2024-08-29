@@ -25,6 +25,10 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<MovieGenre>().HasKey(mg => new { mg.MovieId, mg.GenreId });
         modelBuilder.Entity<UserMovie>().HasKey(um => new { um.UserId, um.MovieId });
 
+        modelBuilder.Entity<UserMovie>()
+            .Property(um => um.Status)
+            .HasConversion<string>();
+        
         base.OnModelCreating(modelBuilder);
     }
 }

@@ -21,23 +21,27 @@ public class UserMovieController : ControllerBase
     }
 
     [HttpPost("add")]
-    public async Task<IActionResult> AddToList(int movieId, Status status)
+    public async Task<IActionResult> AddToList([FromQuery ]int movieId, [FromQuery] Status status)
     {
         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        Console.WriteLine(status);
         await _userMovieService.AddToListAsync(userId, movieId, status);
         return Ok();
     }
 
-    [HttpPost("remove")]
-    public async Task<IActionResult> RemoveFromList(int movieId, Status status)
+    [HttpDelete("remove")]
+    public async Task<IActionResult> RemoveFromList([FromQuery ] int movieId, [FromQuery ] Status status)
     {
         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        Console.WriteLine(userId);
+        Console.WriteLine(movieId);
+        Console.WriteLine(status);
         await _userMovieService.RemoveFromListAsync(userId, movieId, status);
         return Ok();
     }
 
     [HttpGet("list")]
-    public async Task<IActionResult> GetUserList(Status status)
+    public async Task<ActionResult<IEnumerable<Movie>>> GetUserList(Status status)
     {
         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         var movies = await _userMovieService.GetUserListAsync(userId, status);
@@ -53,7 +57,7 @@ public class UserMovieController : ControllerBase
     }
 
     [HttpPost("score")]
-    public async Task<IActionResult> AddScoreToMovie(int movieId, int score)
+    public async Task<IActionResult> AddScoreToMovie([FromQuery] int movieId, [FromQuery] float score)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
         if (userIdClaim == null) return Unauthorized("User ID claim not found in token");
