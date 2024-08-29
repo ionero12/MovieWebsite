@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieWebsite_Backend.Auth.Models;
 using MovieWebsite_Backend.Auth.Services;
+using MovieWebsite_Backend.Models.Domain;
 using MovieWebsite_Backend.Services;
 using MovieWebsite_Backend.Services.Interfaces;
 
@@ -20,12 +21,13 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+    public async Task<ActionResult<User>> Login([FromBody] LoginDto loginDto)
     {
         try
         {
-            var token = await _userService.LoginAsync(loginDto.Username, loginDto.Password);
-            return Ok(new { Token = token });
+            var user = await _userService.LoginAsync(loginDto.Username, loginDto.Password);
+            _jwtService.SetJwtCookie(user);
+            return Ok(user);
         }
         catch (UnauthorizedAccessException)
         {
@@ -34,17 +36,24 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+    public async Task<ActionResult<User>> Register([FromBody] RegisterDto registerDto)
     {
         try
         {
             var user = await _userService.RegisterAsync(registerDto);
-            var token = _jwtService.GenerateToken(user);
-            return Ok(new { Token = token });
+            _jwtService.SetJwtCookie(user);
+            return Ok(user);
         }
         catch (InvalidOperationException ex)
         {
             return BadRequest(ex.Message);
         }
+    }
+    
+    [HttpPost("logout")]
+    public IActionResult Logout()
+    {
+        _jwtService.ClearJwtCookie();
+        return Ok(new { Message = "Logged out successfully" });
     }
 }

@@ -5,5 +5,7 @@ namespace MovieWebsite_Backend.Auth.Services;
 
 public interface IJwtService
 {
+    void SetJwtCookie(User user);
+    void ClearJwtCookie();
     string GenerateToken(User user);
 }
