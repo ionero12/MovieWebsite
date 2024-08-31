@@ -40,6 +40,16 @@ public class UserMovieService : IUserMovieService
         if (userMovie != null) await _userMovieRepository.RemoveFromList(userMovie);
     }
 
+    public async Task<IEnumerable<UserMovie>> GetUserMoviesAsync(int userId, int movieId)
+    {
+        return await _userMovieRepository.GetUserMovieByIdAsync(userId, movieId);
+    }
+
+    public async Task<IEnumerable<Movie>> GetRatedUserMoviesAsync(int userId)
+    {
+        return await _userMovieRepository.GetRatedUserMoviesAsync(userId);
+    }
+    
     public async Task<IEnumerable<Movie>> GetUserListAsync(int userId, Status status)
     {
         return await _userMovieRepository.GetUserListAsync(userId, status);

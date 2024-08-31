@@ -6,6 +6,8 @@ namespace MovieWebsite_Backend.Data.Repositories.Interfaces;
 public interface IUserMovieRepository
 {
     Task RemoveFromList(UserMovie userMovie);
+    Task<IEnumerable<UserMovie>> GetUserMovieByIdAsync(int userId, int movieId);
+    Task<IEnumerable<Movie>> GetRatedUserMoviesAsync(int userId);
     Task<IEnumerable<Movie>> GetUserListAsync(int userId, Status status);
     Task<bool> IsInListAsync(int userId, int movieId, Status status);
     Task<UserMovie> GetUserMovieByIdsAsync(int userId, int movieId);

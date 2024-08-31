@@ -26,6 +26,16 @@ public class UserMovieRepository : IUserMovieRepository
     {
         return await _context.UserMovies.FirstOrDefaultAsync(uml => uml.UserId == userId && uml.MovieId == movieId);
     }
+
+    public async Task<IEnumerable<UserMovie>> GetUserMovieByIdAsync(int userId, int movieId)
+    {
+        return await _context.UserMovies.Where(uml => uml.UserId == userId && uml.MovieId == movieId).ToListAsync();
+    }
+
+    public async Task<IEnumerable<Movie>> GetRatedUserMoviesAsync(int userId)
+    {
+        return await _context.UserMovies.Where(uml => uml.UserId == userId && uml.Score != 0).Select(uml => uml.Movie).ToListAsync();
+    }
     
     public async Task<IEnumerable<Movie>> GetUserListAsync(int userId, Status status)
     {

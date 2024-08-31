@@ -40,6 +40,22 @@ public class UserMovieController : ControllerBase
         return Ok();
     }
 
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<UserMovie>>> GetUserMovies(int movieId)
+    {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        var movies = await _userMovieService.GetUserMoviesAsync(userId, movieId);
+        return Ok(movies);
+    }
+
+    [HttpGet("rated")]
+    public async Task<ActionResult<IEnumerable<Movie>>> GetRatedUserMovies()
+    {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        var movies = await _userMovieService.GetRatedUserMoviesAsync(userId);
+        return Ok(movies);
+    }
+    
     [HttpGet("list")]
     public async Task<ActionResult<IEnumerable<Movie>>> GetUserList(Status status)
     {
