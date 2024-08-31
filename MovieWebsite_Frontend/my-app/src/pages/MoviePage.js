@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getMovieById, setUserMovie, addMovieScore } from '../services/api';
+import {getMovieById, setUserMovie, addMovieScore, getUserMovies} from '../services/api';
 
 function MoviePage() {
 
@@ -20,8 +20,20 @@ function MoviePage() {
             }
         };
 
+        const fetchUserMovies = async () => {
+            try {
+                const data = await getUserMovies(movieId);
+                setRating(data[0].score);
+            } catch (error) {
+                console.error('Error fetching movie:', error);
+            }
+        };
+
         fetchMovie();
+        fetchUserMovies();
     }, [movieId]);
+
+
 
     const addToList = async (status) => {
         try {
@@ -37,16 +49,18 @@ function MoviePage() {
     };
 
     const handleRating = async (score) => {
-        try {
-            setIsLoading(true);
-            await addMovieScore(movie.movieId, score);
-            setRating(score);
-            console.log(`Rating added: ${score}`);
-        } catch (error) {
-            console.error('Error adding rating:', error);
-            setError('Failed to add rating');
-        } finally {
-            setIsLoading(false);
+        if (score !== rating) {
+            try {
+                setIsLoading(true);
+                await addMovieScore(movie.movieId, score);
+                setRating(score);
+            } catch (error) {
+                setError('Failed to add rating');
+            } finally {
+                setIsLoading(false);
+            }
+        } else {
+            console.log('Selected rating is the same as the current rating. No update needed.');
         }
     };
 
@@ -85,6 +99,7 @@ function MoviePage() {
                                         </button>
                                     ))}
                                 </div>
+                                {rating > 0 && <p className="mt-2 text-green-600">Your current rating: {rating}</p>}
                             </div>
 
                             <div className="mt-4 flex space-x-4">

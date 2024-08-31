@@ -25,6 +25,18 @@ export const getMovies = async () => {
     return response.data;
 };
 
+export const getUserMovies = async (movieId) => {
+    const response = await api.get('/UserMovie', {
+        params: {movieId}
+    });
+    return response.data;
+};
+
+export const getRatedUserMovies = async() => {
+    const response = await api.get('/UserMovie/rated');
+    return response.data;
+}
+
 export const getMoviesByStatus = async (status) => {
     const response = await api.get('/UserMovie/list', {
         params: { status }

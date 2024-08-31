@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
+import MovieListRated from "../components/movies/MovieListRated";
 
 function UserProfile() {
     const { user } = useAuth();
@@ -15,10 +16,11 @@ function UserProfile() {
         <div className="container mx-auto px-4 py-8">
             <div className="bg-russian-violet text-vista-blue shadow-md rounded-lg p-6">
                 <h1 className="text-2xl font-bold text-rosewood mb-4">User Profile</h1>
-                <p className="text-lg text-glaucous">Username: {user.username}</p>
-                <p className="text-lg text-glaucous">Email: {user.email}</p>
 
-                {/* Add more user details here */}
+                 Add more user details here
+                <main className="flex-1 w-full p-8">
+                    <MovieListRated/>
+                </main>
             </div>
         </div>
     );

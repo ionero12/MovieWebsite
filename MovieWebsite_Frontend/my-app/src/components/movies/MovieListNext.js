@@ -35,11 +35,11 @@ function MovieList() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {movies.map((movie) => (
                     <div key={movie.movieId} className="bg-russian-violet text-vista-blue shadow-md rounded-lg overflow-hidden">
-                        <img className="w-full h-54 object-cover" src={movie.posterPath} alt={movie.title} />
+                        <img className="w-full h-52 object-cover" src={movie.posterPath} alt={movie.title} />
                         <div className="p-4">
-                            <h3 className="font-bold text-xl text-rosewood mb-2">{movie.title}</h3>
+                            <h3 className="font-bold text-xl text-hookers-green mb-2">{movie.title}</h3>
                             <button
-                                className="bg-hookers-green text-white px-4 py-2 rounded hover:bg-rosewood transition duration-300"
+                                className="bg-rosewood text-white px-4 py-2 rounded hover:bg-rosewood_dark transition duration-300"
                                 onClick={() => removeFromList(movie.movieId, 'next')}
                                 disabled={isLoading}
                             >

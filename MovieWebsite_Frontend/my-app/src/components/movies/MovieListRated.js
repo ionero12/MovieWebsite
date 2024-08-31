@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getMovies } from '../../services/api';
+import {getMovies, getRatedUserMovies} from '../../services/api';
 
 function MovieList() {
 
@@ -9,7 +9,7 @@ function MovieList() {
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const data = await getMovies();
+                const data = await getRatedUserMovies();
                 setMovies(data);
             } catch (error) {
                 console.error('Error fetching movies:', error);
